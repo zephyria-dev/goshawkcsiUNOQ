@@ -1,12 +1,12 @@
-# Zephyria Shield - Camera Integration Guide
+# GosHawk Hat Shield - Camera Integration Guide
 
-This project concentrates all information available to add in Linux device tree of Arduino UNO Q, all devices handled by Zephyria Shield. 
+This project concentrates all information available to add in Linux device tree of Arduino UNO Q, all devices handled by GosHawk Hat Shield. 
 
 Uno Q is a relatively new Single Board Computer (SBC) with two domains: a Microprocessor (MPU) able to run Linux (QRB2210 SoC) and a Microcontroller (MCU) that runs Zephyr (STM32U585). These two domains are interconnected and can handle IPC efficiently.
 
 ## Table of Contents
 
-1. [Devices Handled by Zephyria Shield](#devices-handled-by-zephyria-shield)
+1. [Devices Handled by GosHawk Hat Shield](#devices-handled-by-zephyria-shield)
 2. [Camera Hardware Analysis](#camera-hardware-analysis)
 3. [Device Tree Configuration](#device-tree-configuration)
 4. [Configuring Cameras in Linux](#configuring-cameras-in-linux)
@@ -18,8 +18,10 @@ Uno Q is a relatively new Single Board Computer (SBC) with two domains: a Microp
 10. [References](#references)
 
 ---
+Announcement: CSI camera functions are working. A updated patch for DSI screens is on the way!
+---
 
-## Devices Handled by Zephyria Shield
+## Devices Handled by GosHawk Hat Shield
 
 - 2 CSI cameras through UNO Q JMEDIA/JMISC connector
 - 1 DSI display through UNO Q JMEDIA/JMISC connector
@@ -793,7 +795,7 @@ wait ≥50ms                 (GT911 ready for I2C)
 
 - Arduino UNO Q Schematic: ABX00162-schematics.pdf
 - RPi Camera v2 Schematic: RP-008150-DS-1-camera-module-2-schematics.pdf
-- Zephyria Shield Schematic
+- GosHawk Hat Shield Schematic
 
 ---
 
@@ -810,7 +812,3 @@ wait ≥50ms                 (GT911 ready for I2C)
 | 2.1 | Mar 2026 | Audio fix: disabled HDMI DAI link in Freenove DTS; rewrote configure-audio.sh with correct PM4125 controls (RX_RX0/RX1 Digital, TX_DEC0); volume/mic-gain subcommands |
 | 2.2 | Mar 2026 | Corrected CSI/DSI pin info: CSI pin 12 = LED_EN (not RESET); IMX219 XCLR tied HIGH on camera PCB; added Zephyr GPIO mappings; systemd boot service (zephyria-setup.sh) |
 | 2.3 | Mar 2026 | GT911 touchscreen: patched goodix_ts with polling mode (stock requires IRQ); CCI bus 0 timeout diagnosis; I2C address latching; MCU reset sequence documented |
-
----
-
-**Document created by: aroeira.io (future: arologic.com.br)**
