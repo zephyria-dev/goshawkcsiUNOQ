@@ -1,7 +1,5 @@
 # Zephyria Shield - Camera Integration Guide
 
-**Document by: aroeira.io (future: arologic.com.br)**
-
 This project concentrates all information available to add in Linux device tree of Arduino UNO Q, all devices handled by Zephyria Shield. 
 
 Uno Q is a relatively new Single Board Computer (SBC) with two domains: a Microprocessor (MPU) able to run Linux (QRB2210 SoC) and a Microcontroller (MCU) that runs Zephyr (STM32U585). These two domains are interconnected and can handle IPC efficiently.
