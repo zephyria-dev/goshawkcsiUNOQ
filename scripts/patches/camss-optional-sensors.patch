@@ -1,0 +1,74 @@
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -10,6 +10,7 @@
+ #include <linux/clk.h>
+ #include <linux/interconnect.h>
++#include <linux/i2c.h>
+ #include <linux/media-bus-format.h>
+ #include <linux/media.h>
+ #include <linux/module.h>
+@@ -3158,6 +3159,48 @@
+ 	return 0;
+ }
+
++/*
++ * camss_sensor_is_present - Check if a sensor responds on its I2C bus
++ * @dev:         CAMSS device (for logging)
++ * @sensor_node: DT node of the sensor (e.g. sensor@10)
++ *
++ * Return: true  if sensor answered or detection was not possible
++ *         false if bus was accessible and no device answered
++ */
++static bool camss_sensor_is_present(struct device *dev,
++				    struct device_node *sensor_node)
++{
++	struct device_node *bus_node;
++	struct i2c_adapter *adap;
++	u32 reg;
++	union i2c_smbus_data dummy;
++	int ret;
++
++	if (of_property_read_u32(sensor_node, "reg", &reg))
++		return true;
++
++	bus_node = of_get_parent(sensor_node);
++	if (!bus_node)
++		return true;
++
++	adap = of_find_i2c_adapter_by_node(bus_node);
++	of_node_put(bus_node);
++	if (!adap)
++		return true;
++
++	ret = i2c_smbus_xfer(adap, reg, 0, I2C_SMBUS_READ, 0,
++			     I2C_SMBUS_BYTE, &dummy);
++	put_device(&adap->dev);
++
++	if (ret < 0) {
++		dev_info(dev,
++			 "sensor %pOFn @0x%02x not detected (err %d), skipping\n",
++			 sensor_node, reg, ret);
++		return false;
++	}
++
++	dev_info(dev, "sensor %pOFn @0x%02x detected\n", sensor_node, reg);
++	return true;
++}
++
+ /*
+  * camss_of_parse_ports - Parse ports node
+  * @dev: Device
+@@ -3187,6 +3230,13 @@
+ 			goto err_cleanup;
+ 		}
+
++		/* Skip sensors that are disabled or physically absent */
++		if (!of_device_is_available(remote) ||
++		    !camss_sensor_is_present(dev, remote)) {
++			of_node_put(remote);
++			continue;
++		}
++
+ 		csd = v4l2_async_nf_add_fwnode(&camss->notifier,
+ 					       of_fwnode_handle(remote),
+ 					       struct camss_async_subdev);

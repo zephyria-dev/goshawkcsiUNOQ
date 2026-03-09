@@ -1,0 +1,14 @@
+[Unit]
+Description=Zephyria Shield — configure display, audio, cameras
+After=multi-user.target sound.target
+Wants=sound.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/zephyria-setup.sh setup
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,41 @@
+DSI
+
+SIGNAL           | DSI PIN  | JMEDIA PIN            | JMISC PIN  | DOMAIN
+------           | -------  | ----------            | ---------- | ------
+GND              | 1,4,7,10 | NC                    | NC         | —
+MIPI_DSI0_L0_N   | 2        | 10                    | NC         | QRB2210 (Linux)
+MIPI_DSI0_L0_P   | 3        | 12                    | NC         | QRB2210 (Linux)
+MIPI_DSI0_L1_N   | 5        | 6                     | NC         | QRB2210 (Linux)
+MIPI_DSI0_L1_P   | 6        | 4                     | NC         | QRB2210 (Linux)
+MIPI_DSI0_CLK_N  | 8        | 3                     | NC         | QRB2210 (Linux)
+MIPI_DSI0_CLK_P  | 9        | 5                     | NC         | QRB2210 (Linux)
+DISP_EN          | 11       | NC                    | 11 (D5)    | STM32 only (*)
+DISP_RESET       | 12       | NC                    | 13 (D6)    | STM32 only (*)
+CCI_I2C_SCL0     | 13       | 51 (through PCA9306)  | NC         | QRB2210 (Linux)
+CCI_I2C_SDA0     | 14       | 53 (through PCA9306)  | NC         | QRB2210 (Linux)
+3V3              | 15       | NC                    | NC         | always-on
+
+(*) DISP_EN and DISP_RESET are in the STM32U585 (Zephyr) domain.
+    They are NOT accessible as Linux TLMM GPIOs.
+    Hardware workarounds required — see DSI-DISPLAY-GUIDE.md.
+
+
+MICROPHONE
+
+SIGNAL 		| MIC PIN | JMEDIA PIN | JMISC PIN | Observation |
+------ 		| ------- | ---------- | ---------- | --- |
+MIC2_INM	| 1      | NC | 31 | MIC2_INN_CONN |
+MIC2_INP	| 2	 | NC | (through RC Filter) 29  | MIC2_INP_CONN |
+MIC2_BIAS	| 2	 | (NC | (through RC Filter) 33 | MIC2_BIAS_CONN |
+
+
+HEADPHONE
+
+SIGNAL 		| HEADPHONE PIN | JMEDIA PIN | JMISC PIN |  Observation |
+------ 		| ------- | ---------- | ---------- | --- |
+HPH_REF	| 1 | NC | 40 | HPH_REF_CONN |
+HPH_R    | 3 | NC | 38 |HPH_R_CONN |
+HPH_L	| 2 | NC | 36 | HPH_L_CONN |
+
+
+MIC and HEAPHONE pins are connected to PM4125 audio codec IC of QRB2210
